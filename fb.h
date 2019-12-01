@@ -13,8 +13,11 @@ typedef struct _fb
     int fbfd;
 
     // Info about screen and framebuffer
-	struct fb_var_screeninfo v_info;
-	struct fb_fix_screeninfo f_info;
+	struct fb_var_screeninfo* v_info;
+	struct fb_fix_screeninfo* f_info;
 } fb_t;
+
+void fb_init(fb_t* fb);
+void fb_open(fb_t* fb);
 
 #endif
