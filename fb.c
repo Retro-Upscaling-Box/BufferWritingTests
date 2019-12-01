@@ -69,13 +69,11 @@ void fb_print_info(fb_t* fb){
 }
 
 void fb_get(fb_t* fb, int x, int y, char* r, char* g, char* b) {
-    int pixel_size = (fb->v_info->bits_per_pixel / 4);
-    int width = fb->v_info->xres * pixel_size;
-    char* addr = fb->fb + (y * width) + (x * pixel_size);
+    char* addr = fb->fb + 4 * ((y * fb->v_info->xres) + x);
 
-    *r = addr[0];
+    *r = addr[2];
     *g = addr[1];
-    *b = addr[2];
+    *b = addr[0];
 }
 
 void fb_set(fb_t* fb, int x, int y, char r, char g, char b){
