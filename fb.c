@@ -60,6 +60,32 @@ void fb_open(fb_t* fb){
     }
 }
 
+// Print the resolution and bit-depth of the framebuffer
+void fb_print_info(fb_t* fb){
+    printf("Resolution: %dx%d, %d bpp\n",
+        fb->v_info->xres,
+        fb->v_info->yres,
+        fb->v_info->bits_per_pixel);
+}
+
+void fb_get(fb_t* fb, int x, int y, char* r, char* g, char* b) {
+    int pixel_size = (fb->v_info->bits_per_pixel / 4);
+    int width = fb->v_info->xres * pixel_size;
+    char* addr = fb->fb + (y * width) + (x * pixel_size);
+
+    *r = addr[0];
+    *g = addr[1];
+    *b = addr[2];
+}
+
+void fb_set(fb_t* fb, int x, int y, char r, char g, char b){
+    char* addr = fb->fb + 4 * ((y * fb->v_info->xres) + x);
+
+    addr[2] = r;
+    addr[1] = g;
+    addr[0] = b;
+}
+
 void fb_close(fb_t* fb){
     // Close the Framebuffer File Descriptor
     close(fb->fbfd);
