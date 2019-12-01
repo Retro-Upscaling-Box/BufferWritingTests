@@ -19,5 +19,6 @@ typedef struct _fb
 
 void fb_init(fb_t* fb);
 void fb_open(fb_t* fb);
+void fb_close(fb_t* fb);
 
 #endif

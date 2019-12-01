@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include <unistd.h>
 #include <sys/fcntl.h>
 #include <sys/ioctl.h>
 #include <sys/mman.h>
@@ -57,4 +58,20 @@ void fb_open(fb_t* fb){
         printf("Something went wrong when mapping the framebuffer memory\n");
         return;
     }
+}
+
+void fb_close(fb_t* fb){
+    // Close the Framebuffer File Descriptor
+    close(fb->fbfd);
+    fb->fbfd = -1;
+
+    // Unmap the framebuffer
+    munmap(fb->fb, fb->size);
+    fb->fb = NULL;
+
+    // Free the space used by the info structs
+    free(fb->v_info);
+    free(fb->f_info);
+    fb->v_info = NULL;
+    fb->f_info = NULL;
 }
