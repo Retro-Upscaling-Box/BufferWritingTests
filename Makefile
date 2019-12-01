@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS = -std=c11 -O3
+CFLAGS = -std=c11 -O3 -g -Wall
 
 EXEC = fb
 
