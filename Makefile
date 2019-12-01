@@ -8,6 +8,12 @@ OBJ = $(patsubst %.c,%.o,$(SRC))
 
 all: $(EXEC)
 
+run: $(EXEC)
+	./$<
+
+test: $(EXEC)
+	valgrind --leak-check=full ./$<
+
 $(EXEC): $(OBJ)
 	$(CC) -o $(EXEC) $(CFLAGS) $(OBJ)
 
