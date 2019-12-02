@@ -68,6 +68,14 @@ void fb_print_info(fb_t* fb){
         fb->v_info->bits_per_pixel);
 }
 
+argb_t* fb_begin(fb_t* fb){
+    return (argb_t*)fb->fb;
+}
+
+argb_t* fb_end(fb_t* fb){
+    return (argb_t*)(fb->fb + fb->size);
+}
+
 void fb_get(fb_t* fb, int x, int y, char* r, char* g, char* b) {
     char* addr = fb->fb + 4 * ((y * fb->v_info->xres) + x);
 

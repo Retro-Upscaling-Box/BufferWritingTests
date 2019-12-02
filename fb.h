@@ -3,6 +3,11 @@
 
 #include <linux/fb.h>
 
+typedef struct _argb
+{
+    char b, g, r, a;
+} argb_t;
+
 typedef struct _fb
 {
     // pointer to an open framebuffer and its size
@@ -21,6 +26,9 @@ void fb_init(fb_t* fb);
 void fb_open(fb_t* fb);
 
 void fb_print_info(fb_t* fb);
+
+argb_t* fb_begin(fb_t* fb);
+argb_t* fb_end(fb_t* fb);
 
 void fb_get(fb_t* fb, int x, int y, char* r, char* g, char* b);
 void fb_set(fb_t* fb, int x, int y, char r, char g, char b);
