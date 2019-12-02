@@ -5,7 +5,34 @@
 #include <time.h>
 #include <string.h>
 
+void fill_itr(fb_t* fb, char r, char g, char b){
+    argb_t clr = {b, g, r, 0};
 
+    argb_t* itr;
+    for(itr = fb_begin(fb); itr != fb_end(fb); itr++){
+        *itr = clr;
+    }
+}
+
+void fill_loop(fb_t* fb, char r, char g, char b){
+    int i, j;
+
+    for(i = 0; i < fb->v_info->yres; i++){
+        for(j = 0; j < fb->v_info->xres; j++){
+            fb_set(fb, j, i, r, g, b);
+        }
+    }
+}
+
+void time_fill(fb_t* fb, char r, char g, char b, void(*fill)(fb_t*, char, char, char)){
+    clock_t start = clock();
+
+    fill(fb, r, g, b);
+
+    clock_t end = clock();
+
+    printf("Took %fs\n", (double)(end - start)/CLOCKS_PER_SEC);
+}
 
 int main(){
     fb_t* fb = malloc(sizeof(fb_t));
@@ -13,29 +40,11 @@ int main(){
     fb_open(fb);
     fb_print_info(fb);
 
-    clock_t start, end, total;
+    printf("Loop ");
+    time_fill(fb, 255, 100, 100, fill_loop);
 
-    start = clock();
-
-    while(1){
-        double clk = (double)(clock()  % CLOCKS_PER_SEC) * 2 / CLOCKS_PER_SEC;
-
-        if(clk >= 1){
-            clk = (1 - (clk - 1));
-        }
-
-        int i, j;
-        for(i = 0; i < 1200; i++){
-            for(j = 0; j < 1920; j++){
-                fb_set(fb, j, i, clk * 255, 0, (1 - clk) * 255);
-            }
-        }
-    }
-
-    end = clock();
-    total = end - start;
-
-    printf("Took %fs\n", (double)total/CLOCKS_PER_SEC);
+    printf("Iter ");
+    time_fill(fb, 255, 100, 100, fill_itr);
 
     fb_close(fb);
     free(fb);
